@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Wedding Invitation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --main-bg: #f8f7f5; 
+            --text-color: #4a4a4a; 
+            --sub-text-color: #666;
+            --line-color: #d1d1d1;
+        }
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            background: var(--main-bg); 
+            color: var(--text-color); 
+            font-family: 'Zen Old Mincho', serif; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 120px 40px; 
+            text-align: center; 
+        }
+
+        /* ページタイトル */
+        .page-title { 
+            font-size: 1.8rem; 
+            letter-spacing: 0.5em; 
+            text-transform: uppercase; 
+            margin-bottom: 100px; 
+            font-weight: 900; 
+            opacity: 0.8; 
+        }
+
+        /* プロフィールセクション */
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .profile-image {
+            width: 250px; /* 画像のサイズ調整 */
+            height: 250px;
+            border-radius: 50%; /* 真円に切り抜く */
+            object-fit: cover;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInScale 1s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            letter-spacing: 0.2em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 0.6s;
+        }
+
+        .profile-description {
+            max-width: 500px;
+            font-size: 0.9rem;
+            line-height: 2;
+            color: var(--sub-text-color);
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 0.9s;
+        }
+
+        /* 2人の間の区切り線 */
+        .separator {
+            width: 80px;
+            height: 1px;
+            background-color: var(--line-color);
+            margin: 80px auto; /* 上下の間隔 */
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 1.2s;
+        }
+
+        /* アニメーションキーフレーム */
+        @keyframes fadeInScale {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* 戻るボタン */
+        .back-link { 
+            display: inline-block; 
+            margin-top: 80px; 
+            text-decoration: none; 
+            color: var(--text-color); 
+            border-bottom: 1px solid var(--line-color); 
+            padding-bottom: 5px; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.25em;
+            transition: opacity 0.3s;
+        }
+        .back-link:hover { opacity: 0.6; }
+
+        @media (max-width: 768px) {
+            .container { padding: 80px 30px; }
+            .page-title { font-size: 1.5rem; margin-bottom: 70px; }
+            .profile-image { width: 200px; height: 200px; }
+            .profile-name { font-size: 1.3rem; }
+            .profile-description { font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">Profile</h1>
+        
+        <div class="profile-section">
+            <img src="images/groom_profile.jpg" alt="新郎 Hirotaka" class="profile-image">
+            <span class="profile-name">HIROTAKA</span>
+            <p class="profile-description">
+                旅行とカメラが趣味のHirotakaです。Saeと出会ってから、日常がよりカラフルになりました。
+                これからの人生も、たくさんの美しい景色をSaeと一緒に見ていきたいと思っています。
+                当日は皆さんと楽しい時間を過ごせることを心より願っています。
+            </p>
+        </div>
+
+        <div class="separator"></div> <div class="profile-section">
+            <img src="images/bride_profile.jpg" alt="新婦 Sae" class="profile-image">
+            <span class="profile-name">SAE</span>
+            <p class="profile-description">
+                美味しいものを食べることが大好きなSaeです。
+                いつも笑顔で私を支えてくれるHirotakaに感謝しています。
+                新しい家族として、彼と共に温かく穏やかな家庭を築いていくのが楽しみです。
+                皆様にお会いできるのを心待ちにしております。
+            </p>
+        </div>
+
+        <a href="index.html" class="back-link">BACK TO TOP</a>
+    </div>
+</body>
+</html>

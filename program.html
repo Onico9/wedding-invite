@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program | Wedding Invitation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --main-bg: #f8f7f5; 
+            --text-color: #4a4a4a; 
+            --sub-text-color: #666;
+            --line-color: #d1d1d1;
+            --gold-accent: linear-gradient(90deg, #c5a059, #e9d0a5, #c5a059);
+        }
+        body, html { 
+            margin: 0; padding: 0; background: var(--main-bg); 
+            color: var(--text-color); font-family: 'Zen Old Mincho', serif; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 600px; margin: 0 auto; padding: 120px 40px; text-align: center; }
+
+        /* ページタイトルと金のライン */
+        .page-title { 
+            font-size: 1.8rem; letter-spacing: 0.5em; text-transform: uppercase; 
+            margin-bottom: 20px; font-weight: 900; opacity: 0.8; 
+        }
+        .title-gold-line {
+            width: 60px; height: 1px; background: var(--gold-accent);
+            margin: 0 auto 100px auto;
+        }
+
+        .program-list { display: flex; flex-direction: column; align-items: center; gap: 70px; }
+
+        .program-item {
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0; transform: translateY(20px);
+            animation: fadeInUp 1.2s ease forwards;
+        }
+
+        /* アニメーション遅延 */
+        .program-item:nth-child(1) { animation-delay: 0.2s; }
+        .program-item:nth-child(2) { animation-delay: 0.4s; }
+        .program-item:nth-child(3) { animation-delay: 0.6s; }
+        .program-item:nth-child(4) { animation-delay: 0.8s; }
+        .program-item:nth-child(5) { animation-delay: 1.0s; }
+
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        .time {
+            font-size: 0.85rem; letter-spacing: 0.3em;
+            color: var(--sub-text-color); margin-bottom: 25px; /* 下との間隔を広げた */
+            position: relative;
+        }
+
+        /* 縦線の位置調整 */
+        .time::after {
+            content: '';
+            position: absolute;
+            top: 30px; /* 線の開始位置を下げた */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 20px; /* 線を少し長くして優雅に */
+            background-color: var(--line-color);
+        }
+
+        .title {
+            font-size: 1.15rem; letter-spacing: 0.15em; font-weight: 700;
+            margin-top: 15px; /* 文字の開始位置を調整 */
+        }
+
+        .back-link { 
+            display: inline-block; margin-top: 120px; text-decoration: none; 
+            color: var(--text-color); border-bottom: 1px solid var(--line-color); 
+            padding-bottom: 5px; font-size: 0.75rem; letter-spacing: 0.25em;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 80px 30px; }
+            .program-list { gap: 60px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">Program</h1>
+        <div class="title-gold-line"></div>
+        
+        <div class="program-list">
+            <div class="program-item">
+                <span class="time">10:30</span>
+                <span class="title">Reception</span>
+            </div>
+            <div class="program-item">
+                <span class="time">11:00</span>
+                <span class="title">Ceremony</span>
+            </div>
+            <div class="program-item">
+                <span class="time">11:45</span>
+                <span class="title">Welcome Party</span>
+            </div>
+            <div class="program-item">
+                <span class="time">12:30</span>
+                <span class="title">Wedding Reception</span>
+            </div>
+            <div class="program-item">
+                <span class="time">15:00</span>
+                <span class="title">Send off</span>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-link">BACK TO TOP</a>
+    </div>
+</body>
+</html>

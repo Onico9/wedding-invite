@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wedding Invitation | Hirotaka & Sae</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --main-bg: #f8f7f5; 
+            --text-color: #4a4a4a; 
+            --sub-text-color: #666;
+            --line-color: #d1d1d1;
+            --scroll-white: #ffffff;
+            --gold-accent: linear-gradient(90deg, #c5a059, #e9d0a5, #c5a059);
+        }
+        
+        body, html { 
+            margin: 0; padding: 0; background: var(--main-bg); 
+            color: var(--text-color); font-family: 'Zen Old Mincho', serif; 
+            -webkit-font-smoothing: antialiased; scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* --- ナビゲーション (右寄せ) --- */
+        .fixed-nav {
+            position: fixed; top: 0; width: 100%; height: 60px;
+            background: rgba(248, 247, 245, 0.98);
+            display: flex; justify-content: flex-end; align-items: center;
+            padding-right: 5%; gap: 20px; z-index: 100; box-sizing: border-box;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+        }
+        .fixed-nav a { 
+            text-decoration: none; color: var(--text-color); font-size: 0.7rem; 
+            letter-spacing: 0.15em; position: relative; padding: 5px 0;
+        }
+        .fixed-nav a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; 
+            background: var(--gold-accent); transition: width 0.4s ease;
+        }
+        .fixed-nav a:hover::after { width: 100%; }
+
+        /* --- ヒーローエリア --- */
+        .hero { 
+            display: flex; height: 100vh; width: 100%; position: relative; 
+            overflow: hidden; align-items: center; padding-top: 60px; box-sizing: border-box; 
+        }
+        .hero-left { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-left: 8%; z-index: 2; }
+        .hero-right { 
+            flex: 1.2; height: 80vh; background: url('web用.jpg') no-repeat center center; 
+            background-size: cover; border-radius: 200px 0 0 10px; margin-right: -2%; position: relative; z-index: 1;
+        }
+
+        /* カウントダウン */
+        .countdown-container {
+            position: absolute; bottom: 30px; left: 30px;
+            color: var(--scroll-white); text-align: left; opacity: 0.9;
+        }
+        .countdown-label { font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; display: block; opacity: 0.8; }
+        .countdown-flex { display: flex; align-items: baseline; gap: 10px; }
+        .count-item { display: flex; flex-direction: column; align-items: center; }
+        .count-num { font-size: 1.4rem; font-weight: 700; line-height: 1; }
+        .count-unit { font-size: 0.45rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 3px; opacity: 0.7; }
+        .count-sep { width: 1px; height: 18px; background: var(--gold-accent); opacity: 0.6; align-self: center; }
+
+        /* Scroll UI */
+        .scroll-indicator { position: absolute; right: 3%; bottom: 5%; display: flex; flex-direction: column; align-items: center; opacity: 0; transition: opacity 2s ease; z-index: 3; }
+        .scroll-text { writing-mode: vertical-rl; font-size: 0.65rem; letter-spacing: 0.3em; margin-bottom: 10px; color: var(--scroll-white); }
+        .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, #c5a059 0%, #e9d0a5 50%, transparent 50%); background-size: 100% 200%; animation: scrollLineMove 2s infinite; }
+        @keyframes scrollLineMove { 0% { background-position: 0 -100%; } 100% { background-position: 0 100%; } }
+        .scroll-visible { opacity: 1; }
+
+        /* メインタイトル (2行) */
+        .invitation-text { font-weight: 900; font-size: clamp(1.8rem, 8vw, 3.8rem); margin: 0; line-height: 1.2; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.2; transition: opacity 2.5s ease; }
+        .invitation-text span { display: block; }
+        .fade-in-active { opacity: 1; }
+        .gold-separator { width: 0; height: 1px; background: var(--gold-accent); margin: 20px 0 20px 0; transition: width 2s ease; transition-delay: 2.5s; }
+        .gold-separator.show { width: 80px; }
+        .names-container { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.25em; color: var(--sub-text-color); min-height: 1.5em; }
+        .info-container { margin-top: 20px; opacity: 0; transition: 2s ease; transform: translateY(10px); }
+        .info-container.show { opacity: 1; transform: translateY(0); }
+        .info-date, .info-venue, .info-time { display: block; font-size: 0.8rem; letter-spacing: 0.2em; color: var(--sub-text-color); text-transform: uppercase; line-height: 1.8; }
+
+        /* --- メッセージエリア --- */
+        .message-section { padding: 120px 30px; text-align: center; opacity: 0; transform: translateY(30px); transition: 1.5s ease; }
+        .message-section.is-visible { opacity: 1; transform: translateY(0); }
+        .message-text { max-width: 500px; margin: 0 auto; line-height: 2.5; letter-spacing: 0.08em; font-size: 0.95rem; }
+
+        /* --- 下部メニューボタン (PCでは1列並び) --- */
+        .menu-grid { 
+            max-width: 900px; margin: 0 auto 100px; 
+            display: grid; grid-template-columns: repeat(4, 1fr); 
+            gap: 20px; padding: 0 30px; 
+        }
+        .btn-minimal { 
+            font-weight: 700; text-decoration: none; color: var(--text-color); 
+            border-bottom: 1px solid var(--line-color); padding: 25px 0; 
+            font-size: 0.75rem; letter-spacing: 0.3em; text-align: center; transition: 0.3s; 
+        }
+        .btn-minimal:hover { border-bottom: 1px solid #c5a059; color: #c5a059; }
+        .btn-rsvp { grid-column: 1 / span 4; border: 1px solid var(--line-color); margin-top: 10px; }
+
+        /* --- 更新情報 (以前のデザインへ復刻) --- */
+        .news-section { background: #f0eee9; padding: 80px 20px; font-size: 0.8rem; text-align: center; }
+        .news-title { letter-spacing: 0.4em; margin-bottom: 35px; opacity: 0.6; text-transform: uppercase; }
+        .news-list { list-style: none; padding: 0; max-width: 450px; margin: 0 auto; text-align: left; }
+        .news-list li { 
+            margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.05); 
+            padding-bottom: 8px; display: flex; gap: 20px; 
+        }
+        .news-date { color: #999; min-width: 85px; }
+
+        /* --- スマホ調整 --- */
+        @media (max-width: 768px) {
+            .fixed-nav { padding-right: 15px; gap: 12px; height: 55px; justify-content: center; }
+            .fixed-nav a { font-size: 0.6rem; }
+            .hero { flex-direction: column-reverse; height: auto; min-height: 100vh; padding-top: 55px; }
+            .hero-left { padding: 60px 20px; align-items: center; text-align: center; flex: none; width: 100%; box-sizing: border-box; }
+            .hero-right { height: 50vh; width: 100%; border-radius: 100px 100px 0 0; margin: 0; }
+            .gold-separator { margin: 20px auto; }
+            .message-section { padding: 80px 25px; }
+            .menu-grid { grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 80px; }
+            .btn-rsvp { grid-column: 1 / span 2; }
+            .btn-minimal { padding: 20px 0; font-size: 0.65rem; }
+            .news-list { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed-nav">
+        <a href="venue.html">VENUE</a>
+        <a href="profile.html">PROFILE</a>
+        <a href="gallery.html">GALLERY</a>
+        <a href="program.html">PROGRAM</a>
+        <a href="form.html">RSVP</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-left">
+            <h1 id="main-title" class="invitation-text">
+                <span>WEDDING</span>
+                <span>INVITATION</span>
+            </h1>
+            <div id="gold-line" class="gold-separator"></div>
+            <div id="names-box" class="names-container"></div>
+            <div id="info-box" class="info-container">
+                <span class="info-date">2026.5.16.SAT</span>
+                <span class="info-venue">the kawabun nagoya</span>
+                <span class="info-time">13:30 Reception / 14:00 Ceremony</span>
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="countdown-container">
+                <span class="countdown-label">Time until wedding</span>
+                <div class="countdown-flex">
+                    <div class="count-item">
+                        <span id="days" class="count-num">00</span>
+                        <span class="count-unit">Days</span>
+                    </div>
+                    <div class="count-sep"></div>
+                    <div class="count-item">
+                        <span id="hours" class="count-num">00</span>
+                        <span class="count-unit">Hours</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="scroll-ui" class="scroll-indicator">
+            <span class="scroll-text">SCROLL DOWN</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <section class="message-section" id="message">
+        <div class="message-text">
+            謹啓<br><br>
+            木々の緑が深くなる季節<br>
+            皆様におかれましては 益々ご清祥のこととお慶び申し上げます<br>
+            この度 私たちは結婚式を挙げる運びとなりました<br>
+            日頃お世話になっている皆様と 穏やかなひとときを過ごせれば幸いです
+        </div>
+    </section>
+
+    <section class="menu-section">
+        <div class="menu-grid">
+            <a href="venue.html" class="btn-minimal">VENUE</a>
+            <a href="profile.html" class="btn-minimal">PROFILE</a>
+            <a href="gallery.html" class="btn-minimal">GALLERY</a>
+            <a href="program.html" class="btn-minimal">PROGRAM</a>
+            <a href="form.html" class="btn-minimal btn-rsvp">RSVP</a>
+        </div>
+    </section>
+
+    <footer class="news-section">
+        <div class="news-title">What's New</div>
+        <ul class="news-list">
+            <li><span class="news-date">2026.01.13</span><span>Webサイトを公開しました</span></li>
+            <li><span class="news-date">2026.03.01</span><span>ギャラリーを更新しました</span></li>
+        </ul>
+        <p style="margin-top: 60px; font-size: 0.6rem; opacity: 0.3; letter-spacing: 0.2em;">© HIROTAKA & SAE WEDDING</p>
+    </footer>
+
+    <script>
+        const targetDate = new Date('2026-05-16T13:30:00').getTime();
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            if (diff > 0) {
+                document.getElementById('days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                document.getElementById('hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        window.onload = () => {
+            setTimeout(() => document.getElementById("main-title").classList.add("fade-in-active"), 100);
+            setTimeout(() => document.getElementById("gold-line").classList.add("show"), 500);
+            setTimeout(() => {
+                let i = 0; const text = "HIROTAKA & SAE";
+                function type() { 
+                    if(i < text.length) { 
+                        document.getElementById("names-box").innerHTML += text.charAt(i); i++; setTimeout(type, 100); 
+                    } else { 
+                        setTimeout(() => {
+                            document.getElementById("info-box").classList.add("show");
+                            document.getElementById("scroll-ui").classList.add("scroll-visible");
+                        }, 400); 
+                    } 
+                }
+                type();
+            }, 1200);
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+        }, { threshold: 0.1 });
+        observer.observe(document.getElementById('message'));
+    </script>
+</body>
+</html>
