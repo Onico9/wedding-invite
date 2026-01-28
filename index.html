@@ -12,46 +12,46 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background-color: #f0f0f0; /* 以前のグレー背景 */
         }
 
         .login-container {
             text-align: center;
-            background-color: #fff;
+            background-color: #ffffff;
             padding: 40px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
+            max-width: 300px;
             width: 100%;
         }
 
-        /* 挙式日入力のテキストをシックな明朝体に */
-        .instruction-text {
+        /* ここをシックな明朝体に修正 */
+        .instruction {
             font-family: "Yu Mincho", "MS Mincho", serif;
-            font-size: 1.1rem;
+            font-size: 16px;
             margin-bottom: 20px;
-            letter-spacing: 0.05em;
+            color: #333;
         }
 
         input[type="password"] {
-            width: 80%;
+            width: 100%;
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            font-size: 1rem;
+            box-sizing: border-box; /* サイズ崩れ防止 */
             text-align: center;
         }
 
         button {
-            width: 85%;
+            width: 100%;
             padding: 10px;
             background-color: #333;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 16px;
         }
 
         button:hover {
@@ -61,17 +61,18 @@
         #error-message {
             color: red;
             margin-top: 15px;
-            font-size: 0.9rem;
+            font-size: 14px;
+            min-height: 1.5em;
         }
     </style>
 </head>
 <body>
 
 <div class="login-container">
-    <div class="instruction-text">挙式日8桁を入力</div>
+    <div class="instruction">挙式日8桁を入力</div>
     <input type="password" id="password" placeholder="YYYYMMDD">
     <button onclick="checkPassword()">Enter</button>
-    <p id="error-message"></p>
+    <div id="error-message"></div>
 </div>
 
 <script>
@@ -79,11 +80,11 @@
         const passwordInput = document.getElementById('password').value;
         const errorMessage = document.getElementById('error-message');
 
-        // ここに設定したい8桁の数字を入れてください
+        // 正解のパスコードを設定
         if (passwordInput === '20241022') {
             window.location.href = 'main.html'; 
         } else {
-            // エラー文言を修正
+            // エラー文言を「passcodeが違います」に変更
             errorMessage.textContent = 'passcodeが違います';
         }
     }
