@@ -22,7 +22,8 @@
             transition: opacity 1s ease;
         }
         .gate-content { text-align: center; max-width: 300px; width: 100%; }
-        .gate-label { font-size: 0.8rem; letter-spacing: 0.15em; margin-bottom: 20px; color: var(--text-color); }
+        .gate-label { font-size: 0.8rem; letter-spacing: 0.15em; margin-bottom: 10px; color: var(--text-color); }
+        .gate-sub-label { font-size: 0.65rem; color: #888; margin-bottom: 20px; letter-spacing: 0.05em; }
         .gate-input {
             width: 100%; padding: 12px; border: none; border-bottom: 1px solid #d1d1d1;
             background: none; text-align: center; font-size: 1.2rem; letter-spacing: 0.2em;
@@ -39,14 +40,13 @@
         /* --- 本編の内容（最初は隠しておく） --- */
         #main-content { display: none; }
 
-        /* --- 以下、元のCSSをすべてここに統合 --- */
+        /* --- CSS統合部分 --- */
         body, html { 
             margin: 0; padding: 0; background: var(--main-bg); 
             color: var(--text-color); font-family: 'Zen Old Mincho', serif; 
             -webkit-font-smoothing: antialiased; scroll-behavior: smooth;
             overflow-x: hidden;
         }
-        /* (長いので省略していますが、ここから下にあなたの元のCSSをすべて含めています) */
         .fixed-nav { position: fixed; top: 0; width: 100%; height: 60px; background: rgba(248, 247, 245, 0.98); display: flex; justify-content: flex-end; align-items: center; padding-right: 5%; gap: 20px; z-index: 100; box-sizing: border-box; border-bottom: 1px solid rgba(0,0,0,0.03); }
         .fixed-nav a { text-decoration: none; color: var(--text-color); font-size: 0.7rem; letter-spacing: 0.15em; position: relative; padding: 5px 0; }
         .hero { display: flex; height: 100vh; width: 100%; position: relative; overflow: hidden; align-items: center; padding-top: 60px; box-sizing: border-box; }
@@ -57,8 +57,8 @@
         .gold-separator { width: 0; height: 1px; background: linear-gradient(90deg, #c5a059, #e9d0a5, #c5a059); margin: 20px 0; transition: width 2s ease; transition-delay: 2.5s; }
         .gold-separator.show { width: 80px; }
         .names-container { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.25em; color: #666; min-height: 1.5em; }
-        .info-container { margin-top: 20px; opacity: 0; transition: 2s ease; transform: translateY(10px); }
-        .info-container.show { opacity: 1; transform: translateY(0); }
+        .info-box { margin-top: 20px; opacity: 0; transition: 2s ease; transform: translateY(10px); }
+        .info-box.show { opacity: 1; transform: translateY(0); }
         .info-date, .info-venue, .info-time { display: block; font-size: 0.8rem; letter-spacing: 0.2em; color: #666; text-transform: uppercase; line-height: 1.8; }
         .message-section { padding: 120px 30px; text-align: center; opacity: 0; transform: translateY(30px); transition: 1.5s ease; }
         .message-section.is-visible { opacity: 1; transform: translateY(0); }
@@ -67,7 +67,6 @@
         .btn-minimal { font-weight: 700; text-decoration: none; color: var(--text-color); border-bottom: 1px solid #d1d1d1; padding: 25px 0; font-size: 0.75rem; letter-spacing: 0.3em; text-align: center; transition: 0.3s; }
         .btn-rsvp { grid-column: 1 / span 4; border: 1px solid #d1d1d1; margin-top: 10px; }
         
-        /* スマホ調整 */
         @media (max-width: 768px) {
             .hero { flex-direction: column; height: auto; min-height: 100vh; padding-top: 80px; justify-content: flex-start; }
             .hero-left { padding: 40px 20px 20px 20px; align-items: flex-start; text-align: left; flex: none; width: 100%; box-sizing: border-box; }
@@ -82,8 +81,9 @@
     <div id="gate-screen">
         <div class="gate-content">
             <div class="gate-label">ENTER PASSCODE</div>
-            <input type="tel" id="gate-pass" class="gate-input" placeholder="挙式日8桁を入力">
-            <button class="gate-btn" onclick="checkGate()">UNLOCK</button>
+            <div class="gate-sub-label">例：2026.01.01 → 20260101</div>
+            <input type="tel" id="gate-pass" class="gate-input" placeholder="挙式日8桁を入力" maxlength="8">
+            <button class="gate-btn" id="unlock-btn">UNLOCK</button>
             <div id="gate-error" class="error-msg">合言葉が正しくありません</div>
         </div>
     </div>
@@ -102,7 +102,7 @@
                 <h1 id="main-title" class="invitation-text"><span>WEDDING</span><span>INVITATION</span></h1>
                 <div id="gold-line" class="gold-separator"></div>
                 <div id="names-box" class="names-container"></div>
-                <div id="info-box" class="info-container">
+                <div id="info-box" class="info-box">
                     <span class="info-date">2026.5.16.SAT</span>
                     <span class="info-venue">the kawabun nagoya</span>
                     <span class="info-time">13:30 Reception / 14:00 Ceremony</span>
@@ -133,25 +133,42 @@
     </div>
 
     <script>
+        const passInput = document.getElementById('gate-pass');
+        const unlockBtn = document.getElementById('unlock-btn');
+
         function checkGate() {
-            const pass = document.getElementById('gate-pass').value;
+            let pass = passInput.value;
             const gate = document.getElementById('gate-screen');
             const main = document.getElementById('main-content');
             const error = document.getElementById('gate-error');
+
+            // 【追加】全角数字を半角に変換する処理
+            pass = pass.replace(/[０-９]/g, function(s) {
+                return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+            });
 
             if (pass === '20260516') {
                 gate.style.opacity = '0';
                 setTimeout(() => {
                     gate.style.display = 'none';
                     main.style.display = 'block';
-                    startAnimation(); // アニメーション開始
+                    startAnimation(); 
                 }, 1000);
             } else {
                 error.style.display = 'block';
             }
         }
 
-        // 本編のアニメーション（元々のコードを統合）
+        // ボタンクリックで実行
+        unlockBtn.addEventListener('click', checkGate);
+
+        // 【追加】エンターキー（またはスマホの確定ボタン）で実行
+        passInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkGate();
+            }
+        });
+
         function startAnimation() {
             setTimeout(() => document.getElementById("main-title").classList.add("fade-in-active"), 100);
             setTimeout(() => document.getElementById("gold-line").classList.add("show"), 500);
