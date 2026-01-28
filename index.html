@@ -2,193 +2,99 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Wedding Invitation | Hirotaka & Sae</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Passcode</title>
     <style>
-        :root { 
-            --main-bg: #f8f7f5; 
-            --text-color: #4a4a4a; 
-            --gold-accent: #c5a059;
+        body {
+            font-family: "Yu Mincho", "MS Mincho", serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+            color: #333;
         }
 
-        /* --- ロック画面のスタイル --- */
-        #gate-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--main-bg);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 9999; padding: 20px; box-sizing: border-box;
-            transition: opacity 1s ease;
+        .login-container {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 8px;
         }
-        .gate-content { text-align: center; max-width: 300px; width: 100%; }
-        .gate-label { font-size: 0.8rem; letter-spacing: 0.15em; margin-bottom: 10px; color: var(--text-color); }
-        .gate-sub-label { font-size: 0.65rem; color: #888; margin-bottom: 20px; letter-spacing: 0.05em; }
-        .gate-input {
-            width: 100%; padding: 12px; border: none; border-bottom: 1px solid #d1d1d1;
-            background: none; text-align: center; font-size: 1.2rem; letter-spacing: 0.2em;
-            outline: none; margin-bottom: 20px; font-family: sans-serif;
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
         }
-        .gate-btn {
-            background: none; border: 1px solid var(--gold-accent); color: var(--gold-accent);
-            padding: 10px 40px; cursor: pointer; font-size: 0.8rem; letter-spacing: 0.2em;
+
+        input {
+            font-family: "Times New Roman", "Yu Mincho", serif;
+            padding: 10px;
+            font-size: 1rem;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            outline: none;
+            text-align: center;
+            letter-spacing: 0.2em;
+            width: 200px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto 0;
+            padding: 8px 30px;
+            background-color: #555;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            letter-spacing: 0.1em;
             transition: 0.3s;
         }
-        .gate-btn:hover { background: var(--gold-accent); color: #fff; }
-        .error-msg { color: #d9534f; font-size: 0.7rem; margin-top: 10px; display: none; }
 
-        /* --- 本編の内容（最初は隠しておく） --- */
-        #main-content { display: none; }
-
-        /* --- CSS統合部分 --- */
-        body, html { 
-            margin: 0; padding: 0; background: var(--main-bg); 
-            color: var(--text-color); font-family: 'Zen Old Mincho', serif; 
-            -webkit-font-smoothing: antialiased; scroll-behavior: smooth;
-            overflow-x: hidden;
+        button:hover {
+            background-color: #888;
         }
-        .fixed-nav { position: fixed; top: 0; width: 100%; height: 60px; background: rgba(248, 247, 245, 0.98); display: flex; justify-content: flex-end; align-items: center; padding-right: 5%; gap: 20px; z-index: 100; box-sizing: border-box; border-bottom: 1px solid rgba(0,0,0,0.03); }
-        .fixed-nav a { text-decoration: none; color: var(--text-color); font-size: 0.7rem; letter-spacing: 0.15em; position: relative; padding: 5px 0; }
-        .hero { display: flex; height: 100vh; width: 100%; position: relative; overflow: hidden; align-items: center; padding-top: 60px; box-sizing: border-box; }
-        .hero-left { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-left: 8%; z-index: 2; }
-        .hero-right { flex: 1.2; height: 80vh; background: url('web用.jpg') no-repeat center center; background-size: cover; border-radius: 200px 0 0 10px; margin-right: -2%; position: relative; z-index: 1; }
-        .invitation-text { font-weight: 900; font-size: clamp(1.8rem, 8vw, 3.8rem); margin: 0; line-height: 1.2; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0; transition: opacity 2.5s ease; }
-        .fade-in-active { opacity: 1; }
-        .gold-separator { width: 0; height: 1px; background: linear-gradient(90deg, #c5a059, #e9d0a5, #c5a059); margin: 20px 0; transition: width 2s ease; transition-delay: 2.5s; }
-        .gold-separator.show { width: 80px; }
-        .names-container { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.25em; color: #666; min-height: 1.5em; }
-        .info-box { margin-top: 20px; opacity: 0; transition: 2s ease; transform: translateY(10px); }
-        .info-box.show { opacity: 1; transform: translateY(0); }
-        .info-date, .info-venue, .info-time { display: block; font-size: 0.8rem; letter-spacing: 0.2em; color: #666; text-transform: uppercase; line-height: 1.8; }
-        .message-section { padding: 120px 30px; text-align: center; opacity: 0; transform: translateY(30px); transition: 1.5s ease; }
-        .message-section.is-visible { opacity: 1; transform: translateY(0); }
-        .message-text { max-width: 500px; margin: 0 auto; line-height: 2.5; letter-spacing: 0.08em; font-size: 0.95rem; }
-        .menu-grid { max-width: 900px; margin: 0 auto 100px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 0 30px; }
-        .btn-minimal { font-weight: 700; text-decoration: none; color: var(--text-color); border-bottom: 1px solid #d1d1d1; padding: 25px 0; font-size: 0.75rem; letter-spacing: 0.3em; text-align: center; transition: 0.3s; }
-        .btn-rsvp { grid-column: 1 / span 4; border: 1px solid #d1d1d1; margin-top: 10px; }
-        
-        @media (max-width: 768px) {
-            .hero { flex-direction: column; height: auto; min-height: 100vh; padding-top: 80px; justify-content: flex-start; }
-            .hero-left { padding: 40px 20px 20px 20px; align-items: flex-start; text-align: left; flex: none; width: 100%; box-sizing: border-box; }
-            .hero-right { height: 45vh; width: 85%; align-self: flex-end; border-radius: 100px 0 0 10px; margin-right: -2%; margin-top: 20px; }
-            .menu-grid { grid-template-columns: 1fr 1fr; }
-            .btn-rsvp { grid-column: 1 / span 2; }
+
+        #error-message {
+            color: #d9534f;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            height: 1.2em; /* レイアウト崩れ防止 */
         }
     </style>
 </head>
 <body>
 
-    <div id="gate-screen">
-        <div class="gate-content">
-            <div class="gate-label">ENTER PASSCODE</div>
-            <div class="gate-sub-label">例：2026.01.01 → 20260101</div>
-            <input type="tel" id="gate-pass" class="gate-input" placeholder="挙式日8桁を入力" maxlength="8">
-            <button class="gate-btn" id="unlock-btn">UNLOCK</button>
-            <div id="gate-error" class="error-msg">合言葉が正しくありません</div>
-        </div>
-    </div>
+<div class="login-container">
+    <h1>挙式日8桁を入力</h1>
+    <input type="password" id="passcode" placeholder="YYYYMMDD">
+    <button onclick="checkPasscode()">Enter</button>
+    <div id="error-message"></div>
+</div>
 
-    <div id="main-content">
-        <nav class="fixed-nav">
-            <a href="venue.html">VENUE</a>
-            <a href="profile.html">PROFILE</a>
-            <a href="https://script.google.com/macros/s/AKfycbwURwZ7jNvhN43lLo9UUVhsXghW6AHTJc4Bn9_gG-1jNvQ9jEDX6GWCX2AVPSIk-B55qg/exec">GALLERY</a>
-            <a href="program.html">PROGRAM</a>
-            <a href="form.html">RSVP</a>
-        </nav>
+<script>
+    function checkPasscode() {
+        const input = document.getElementById('passcode').value;
+        const errorMessage = document.getElementById('error-message');
+        
+        // ここに正解の挙式日（例: 20241022）を設定してください
+        const correctPasscode = "20241022"; 
 
-        <section class="hero">
-            <div class="hero-left">
-                <h1 id="main-title" class="invitation-text"><span>WEDDING</span><span>INVITATION</span></h1>
-                <div id="gold-line" class="gold-separator"></div>
-                <div id="names-box" class="names-container"></div>
-                <div id="info-box" class="info-box">
-                    <span class="info-date">2026.5.16.SAT</span>
-                    <span class="info-venue">the kawabun nagoya</span>
-                    <span class="info-time">13:30 Reception / 14:00 Ceremony</span>
-                </div>
-            </div>
-            <div class="hero-right"></div>
-        </section>
-
-        <section class="message-section" id="message">
-            <div class="message-text">
-                謹啓<br><br>
-                木々の緑が深くなる季節<br>
-                皆様におかれましては 益々ご清祥のこととお慶び申し上げます<br>
-                この度 私たちは結婚式を挙げる運びとなりました<br>
-                日頃お世話になっている皆様と 穏やかなひとときを過ごせれば幸いです
-            </div>
-        </section>
-
-        <section class="menu-section">
-            <div class="menu-grid">
-                <a href="venue.html" class="btn-minimal">VENUE</a>
-                <a href="profile.html" class="btn-minimal">PROFILE</a>
-                <a href="https://script.google.com/macros/s/AKfycbwURwZ7jNvhN43lLo9UUVhsXghW6AHTJc4Bn9_gG-1jNvQ9jEDX6GWCX2AVPSIk-B55qg/exec" class="btn-minimal">GALLERY</a>
-                <a href="program.html" class="btn-minimal">PROGRAM</a>
-                <a href="form.html" class="btn-minimal btn-rsvp">RSVP</a>
-            </div>
-        </section>
-    </div>
-
-    <script>
-        const passInput = document.getElementById('gate-pass');
-        const unlockBtn = document.getElementById('unlock-btn');
-
-        function checkGate() {
-            let pass = passInput.value;
-            const gate = document.getElementById('gate-screen');
-            const main = document.getElementById('main-content');
-            const error = document.getElementById('gate-error');
-
-            // 【追加】全角数字を半角に変換する処理
-            pass = pass.replace(/[０-９]/g, function(s) {
-                return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-            });
-
-            if (pass === '20260516') {
-                gate.style.opacity = '0';
-                setTimeout(() => {
-                    gate.style.display = 'none';
-                    main.style.display = 'block';
-                    startAnimation(); 
-                }, 1000);
-            } else {
-                error.style.display = 'block';
-            }
+        if (input === correctPasscode) {
+            // 正解の場合の遷移先URLを入力してください
+            window.location.href = "welcome.html"; 
+        } else {
+            // エラーメッセージの変更
+            errorMessage.innerText = "passcodeが違います";
         }
+    }
+</script>
 
-        // ボタンクリックで実行
-        unlockBtn.addEventListener('click', checkGate);
-
-        // 【追加】エンターキー（またはスマホの確定ボタン）で実行
-        passInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkGate();
-            }
-        });
-
-        function startAnimation() {
-            setTimeout(() => document.getElementById("main-title").classList.add("fade-in-active"), 100);
-            setTimeout(() => document.getElementById("gold-line").classList.add("show"), 500);
-            setTimeout(() => {
-                let i = 0; const text = "HIROTAKA & SAE";
-                function type() { 
-                    if(i < text.length) { 
-                        document.getElementById("names-box").innerHTML += text.charAt(i); i++; setTimeout(type, 100); 
-                    } else { 
-                        document.getElementById("info-box").classList.add("show");
-                    } 
-                }
-                type();
-            }, 1200);
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
-            }, { threshold: 0.1 });
-            observer.observe(document.getElementById('message'));
-        }
-    </script>
 </body>
 </html>
