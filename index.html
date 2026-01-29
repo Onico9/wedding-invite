@@ -12,7 +12,7 @@
             --text-color: #4a4a4a; 
             --gold-accent: #c5a059;
             --soft-gold: #f2ede4;
-            --disabled-text: #888; /* 非公開時の文字色を少し濃く設定 */
+            --disabled-color: #aaa; /* 鍵や無効テキストの色 */
         }
 
         /* --- ロック画面 --- */
@@ -53,69 +53,42 @@
         .fixed-nav { position: fixed; top: 0; width: 100%; height: 60px; background: rgba(248, 247, 245, 0.98); display: flex; justify-content: flex-end; align-items: center; padding-right: 5%; gap: 15px; z-index: 100; box-sizing: border-box; border-bottom: 1px solid rgba(0,0,0,0.03); }
         .fixed-nav a { text-decoration: none; color: var(--text-color); font-size: 0.65rem; letter-spacing: 0.1em; position: relative; padding: 5px 0; transition: 0.3s; }
         .fixed-nav a:hover:not(.disabled) { color: var(--gold-accent); }
-        .fixed-nav a.disabled { color: var(--disabled-text); opacity: 0.6; cursor: default; pointer-events: none; }
+        
+        /* 鍵アイコン専用スタイル */
+        .lock-icon { color: var(--disabled-color); margin-right: 3px; font-style: normal; }
+
+        /* ナビの無効化（4末まで） */
+        .fixed-nav a.disabled { color: var(--disabled-color); opacity: 0.6; cursor: default; pointer-events: none; }
 
         .hero { display: flex; height: 100vh; width: 100%; position: relative; overflow: hidden; align-items: center; padding-top: 60px; box-sizing: border-box; }
         .hero-left { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-left: 8%; z-index: 2; }
         .hero-right { flex: 1.2; height: 80vh; background: url('web用.jpg') no-repeat center center; background-size: cover; border-radius: 200px 0 0 10px; margin-right: -2%; position: relative; z-index: 1; }
         
-        .invitation-text { 
-            font-weight: 900; font-size: clamp(1.5rem, 6vw, 3.2rem); 
-            margin: 0; line-height: 1.5; letter-spacing: 0.2em; 
-            text-transform: uppercase; opacity: 0; transition: opacity 2.5s ease; 
-        }
+        .invitation-text { font-weight: 900; font-size: clamp(1.5rem, 6vw, 3.2rem); margin: 0; line-height: 1.5; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0; transition: opacity 2.5s ease; }
         .invitation-text span { display: block; }
 
-        .scroll-down {
-            position: absolute; right: 30px; bottom: 30px; z-index: 5;
-            writing-mode: vertical-rl; font-size: 0.6rem; letter-spacing: 0.2em;
-            color: #fff; text-decoration: none;
-        }
-        .scroll-down::after {
-            content: ""; position: absolute; bottom: -60px; left: 50%;
-            width: 1px; height: 50px; background: #fff;
-            animation: scrollLine 2s infinite;
-        }
-        @keyframes scrollLine {
-            0% { transform: scaleY(0); transform-origin: top; }
-            50% { transform: scaleY(1); transform-origin: top; }
-            51% { transform: scaleY(1); transform-origin: bottom; }
-            100% { transform: scaleY(0); transform-origin: bottom; }
-        }
+        .scroll-down { position: absolute; right: 30px; bottom: 30px; z-index: 5; writing-mode: vertical-rl; font-size: 0.6rem; letter-spacing: 0.2em; color: #fff; text-decoration: none; }
+        .scroll-down::after { content: ""; position: absolute; bottom: -60px; left: 50%; width: 1px; height: 50px; background: #fff; animation: scrollLine 2s infinite; }
+        @keyframes scrollLine { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
 
         .menu-section { padding: 60px 0 20px; }
-        .menu-container {
-            max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 0 30px;
-        }
+        .menu-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 0 30px; }
         .menu-row { display: flex; justify-content: center; gap: 20px; width: 100%; }
-        .btn-minimal {
-            flex: 0 1 200px; font-weight: 700; text-decoration: none; color: var(--text-color);
-            border-bottom: 1px solid #d1d1d1; padding: 25px 0; font-size: 0.75rem;
-            letter-spacing: 0.3em; text-align: center; transition: 0.3s;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
+        .btn-minimal { flex: 0 1 200px; font-weight: 700; text-decoration: none; color: var(--text-color); border-bottom: 1px solid #d1d1d1; padding: 25px 0; font-size: 0.75rem; letter-spacing: 0.3em; text-align: center; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .btn-minimal:hover:not(.disabled) { color: var(--gold-accent); border-bottom: 1px solid var(--gold-accent); }
-        .btn-minimal.disabled { color: var(--disabled-text); border-bottom: 1px solid #e0e0e0; cursor: default; }
         
-        .status-tag { display: block; letter-spacing: 0.05em; font-weight: 700; margin-top: 5px; color: #999 !important; }
-        .lock-icon { font-size: 0.8em; margin-right: 4px; color: #aaa; vertical-align: middle; }
+        /* 非公開ボタンの見た目 */
+        .btn-minimal.disabled { color: var(--disabled-color); border-bottom: 1px solid #eee; pointer-events: none; }
+        .status-tag { display: block; letter-spacing: 0.05em; font-weight: 700; margin-top: 5px; color: #aaa; font-size: 0.5rem; }
 
         .rsvp-section { background-color: var(--soft-gold); padding: 60px 30px; margin: 40px 0 80px; display: flex; flex-direction: column; align-items: center; text-align: center; }
         .rsvp-deadline { font-size: 0.75rem; color: var(--gold-accent); letter-spacing: 0.15em; margin-bottom: 20px; font-weight: 700; }
         .btn-rsvp { width: 240px; background: #fff; border: 1px solid var(--gold-accent) !important; color: var(--gold-accent) !important; padding: 16px 0; text-decoration: none; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.3em; transition: 0.3s; }
-        .btn-rsvp:hover { background-color: var(--gold-accent) !important; color: #fff !important; box-shadow: 0 5px 15px rgba(197, 160, 89, 0.1); }
-        .rsvp-caption { font-size: 0.7rem; color: var(--gold-accent); margin-top: 15px; letter-spacing: 0.05em; }
+        .btn-rsvp:hover { background-color: var(--gold-accent) !important; color: #fff !important; }
 
         .bottom-section { max-width: 600px; margin: 0 auto 100px; padding: 0 30px; text-align: center; }
         .section-sub-title { font-size: 0.75rem; letter-spacing: 0.2em; color: #888; margin-bottom: 20px; font-weight: 700; }
-        .faq-box { margin-bottom: 60px; }
-        .faq-link { text-decoration: none; color: var(--text-color); font-size: 0.8rem; letter-spacing: 0.1em; border-bottom: 1px solid #d1d1d1; padding-bottom: 3px; transition: 0.3s; }
-        .faq-link:hover { color: var(--gold-accent); border-bottom: 1px solid var(--gold-accent); }
-
-        .news-list { list-style: none; padding: 0; margin: 0 auto; max-width: 450px; font-size: 0.75rem; text-align: left; }
-        .news-item { display: flex; border-bottom: 1px solid #eee; padding: 12px 0; gap: 15px; }
-        .news-date { color: #aaa; flex-shrink: 0; }
-        .news-content { color: #666; }
+        .faq-link { text-decoration: none; color: var(--text-color); font-size: 0.8rem; border-bottom: 1px solid #d1d1d1; padding-bottom: 3px; }
 
         .fade-in-active { opacity: 1; }
         .gold-separator { width: 0; height: 1px; background: linear-gradient(90deg, #c5a059, #e9d0a5, #c5a059); margin: 20px 0; transition: width 2s ease; transition-delay: 2.5s; }
@@ -123,12 +96,10 @@
         .names-container { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.25em; color: #666; min-height: 1.5em; }
         .info-box { margin-top: 20px; opacity: 0; transition: 2s ease; transform: translateY(10px); }
         .info-box.show { opacity: 1; transform: translateY(0); }
-        .info-date, .info-venue, .info-time { display: block; font-size: 0.8rem; letter-spacing: 0.2em; color: #666; text-transform: uppercase; line-height: 1.8; }
         
         .message-section { padding: 120px 30px; text-align: center; opacity: 0; transform: translateY(30px); transition: 1.5s ease; }
         .message-section.is-visible { opacity: 1; transform: translateY(0); }
         .message-text { max-width: 500px; margin: 0 auto; line-height: 2.5; letter-spacing: 0.08em; font-size: 0.95rem; }
-        .message-rsvp-notice { color: var(--gold-accent); font-size: 0.85rem; margin-top: 40px; }
 
         @media (max-width: 768px) {
             .hero { flex-direction: column; height: auto; min-height: 100vh; padding-top: 80px; }
@@ -136,8 +107,6 @@
             .hero-right { height: 45vh; width: 85%; align-self: flex-end; border-radius: 100px 0 0 10px; margin-top: 20px; }
             .menu-row { flex-direction: column; gap: 10px; align-items: center; }
             .btn-minimal { width: 100%; max-width: 250px; }
-            .scroll-down { right: 15px; color: var(--text-color); }
-            .scroll-down::after { background: var(--text-color); }
         }
     </style>
 </head>
@@ -158,11 +127,8 @@
             <a href="venue.html">VENUE</a>
             <a href="program.html">PROGRAM</a>
             <a href="profile.html">PROFILE</a>
-
-            <a href="https://script.google.com/macros/s/AKfycbwURwZ7jNvhN43lLo9UUVhsXghW6AHTJc4Bn9_gG-1jNvQ9jEDX6GWCX2AVPSIk-B55qg/exec" target="_blank" class="disabled"><span class="lock-icon">🔒</span>GALLERY</a>
-
-            <a href="music.html" class="disabled"><span class="lock-icon">🔒</span>MUSIC</a>
-
+            <a href="https://script.google.com/macros/s/AKfycbwURwZ7jNvhN43lLo9UUVhsXghW6AHTJc4Bn9_gG-1jNvQ9jEDX6GWCX2AVPSIk-B55qg/exec" target="_blank" class="disabled"><i class="lock-icon">🔒</i>GALLERY</a>
+            <a href="music.html" class="disabled"><i class="lock-icon">🔒</i>MUSIC</a>
             <a href="form.html">RSVP</a>
         </nav>
 
@@ -204,17 +170,16 @@
                 <div class="menu-row">
                     <a href="profile.html" class="btn-minimal">PROFILE</a>
                     
-                    を消してください
-                    <div class="btn-minimal disabled" style="opacity: 0.6;">
-                        <span><span class="lock-icon">🔒</span>GALLERY</span>
-                        <span class="status-tag" style="font-size: 0.5rem;">4月末公開予定</span>
+                    <div class="btn-minimal disabled">
+                        <span><i class="lock-icon">🔒</i>GALLERY</span>
+                        <span class="status-tag">4月末公開予定</span>
                     </div>
-                    を消してください
-                    <div class="btn-minimal disabled" style="opacity: 0.6;">
-                        <span><span class="lock-icon">🔒</span>MUSIC</span>
-                        <span class="status-tag" style="font-size: 0.5rem;">当日公開予定</span>
+
+                    <div class="btn-minimal disabled">
+                        <span><i class="lock-icon">🔒</i>MUSIC</span>
+                        <span class="status-tag">当日公開予定</span>
                     </div>
-                    </div>
+                </div>
             </div>
         </section>
 
@@ -230,14 +195,10 @@
                 <a href="https://www.thekawabunnagoya.com/thekawabunnagoya/wedding/assembled/" target="_blank" rel="noopener" class="faq-link">THE KAWABUN NAGOYA 公式FAQ</a>
                 <div style="font-size: 0.6rem; color: #aaa; margin-top: 10px; letter-spacing: 0.05em;">※会場の設備・サービスに関する詳細は上記よりご確認いただけます</div>
             </div>
-
             <div class="news-box">
                 <div class="section-sub-title">WHAT'S NEW</div>
                 <ul class="news-list">
-                    <li class="news-item">
-                        <span class="news-date">2026.01.29</span>
-                        <span class="news-content">WEB招待状を公開しました。</span>
-                    </li>
+                    <li class="news-item"><span class="news-date">2026.01.29</span><span class="news-content">WEB招待状を公開しました。</span></li>
                 </ul>
             </div>
         </section>
