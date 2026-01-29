@@ -96,7 +96,7 @@
         }
         .btn-minimal:hover { color: var(--gold-accent); border-bottom: 1px solid var(--gold-accent); }
 
-        /* --- RSVPセクション (サイズ最適化) --- */
+        /* --- RSVPセクション (アニメーション停止・期日修正) --- */
         .rsvp-section {
             background-color: var(--soft-gold);
             padding: 60px 30px;
@@ -112,31 +112,29 @@
             font-weight: 700;
         }
         .btn-rsvp {
-            width: 240px; /* 横幅を絞ってスマートに */
+            width: 240px; 
             background: #fff;
             border: 1px solid var(--gold-accent) !important;
             color: var(--gold-accent) !important;
-            padding: 16px 0; /* 縦幅をスリム化 */
+            padding: 16px 0; 
             text-decoration: none;
             font-weight: 700;
             font-size: 0.8rem;
             letter-spacing: 0.3em;
-            animation: pulse 3s infinite;
             transition: 0.3s;
+            /* アニメーションを削除 */
         }
-        .btn-rsvp:hover { background-color: var(--gold-accent) !important; color: #fff !important; }
+        .btn-rsvp:hover { 
+            background-color: var(--gold-accent) !important; 
+            color: #fff !important;
+            box-shadow: 0 5px 15px rgba(197, 160, 89, 0.1); /* ホバー時のみ少し浮かす */
+        }
         
         .rsvp-caption {
             font-size: 0.7rem;
             color: var(--gold-accent);
             margin-top: 15px;
             letter-spacing: 0.05em;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.2); }
-            50% { transform: scale(1.03); box-shadow: 0 0 15px 0 rgba(197, 160, 89, 0.1); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); }
         }
 
         /* --- FAQ / NEWS --- */
@@ -226,7 +224,7 @@
                 この度 私たちは結婚式を挙げる運びとなりました<br>
                 日頃お世話になっている皆様と 穏やかなひとときを過ごせれば幸いです<br>
                 <div class="message-rsvp-notice">
-                    お手数ですが 挙式1ヶ月前までに<br>
+                    お手数ですが 2026年4月15日までに<br>
                     下記 RSVPよりご回答をお願い申し上げます
                 </div>
             </div>
@@ -247,7 +245,7 @@
         </section>
 
         <section class="rsvp-section">
-            <div class="rsvp-deadline">PLEASE REPLY BY 2026.04.16</div>
+            <div class="rsvp-deadline">PLEASE REPLY BY 2026.04.15</div>
             <a href="form.html" class="btn-rsvp">RSVP</a>
             <div class="rsvp-caption">ご出席のお返事はこちら</div>
         </section>
