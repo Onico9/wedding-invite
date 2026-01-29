@@ -66,7 +66,6 @@
         }
         .invitation-text span { display: block; }
 
-        /* Scroll Down (白) */
         .scroll-down {
             position: absolute; right: 30px; bottom: 30px; z-index: 5;
             writing-mode: vertical-rl; font-size: 0.6rem; letter-spacing: 0.2em;
@@ -84,7 +83,7 @@
             100% { transform: scaleY(0); transform-origin: bottom; }
         }
 
-        /* --- 下部メニューセクション (3列×2段) --- */
+        /* --- 下部メニューセクション --- */
         .menu-grid { 
             max-width: 900px; 
             margin: 0 auto 60px; 
@@ -96,28 +95,43 @@
         .btn-minimal { font-weight: 700; text-decoration: none; color: var(--text-color); border-bottom: 1px solid #d1d1d1; padding: 25px 0; font-size: 0.75rem; letter-spacing: 0.3em; text-align: center; transition: 0.3s; }
         .btn-minimal:hover { color: var(--gold-accent); border-bottom: 1px solid var(--gold-accent); }
 
-        /* RSVPボタンのホバー演出（ボックスゴールド） */
+        /* RSVPボタン特別仕様 */
+        .btn-rsvp {
+            border: 1px solid var(--gold-accent) !important; /* ゴールドの枠線で強調 */
+            color: var(--gold-accent) !important;
+            animation: pulse 3s infinite; /* 控えめなアニメーション */
+        }
         .btn-rsvp:hover {
-            background-color: var(--gold-accent);
-            color: #fff;
-            border-bottom: 1px solid var(--gold-accent);
+            background-color: var(--gold-accent) !important;
+            color: #fff !important;
+        }
+        .rsvp-deadline {
+            grid-column: 1 / span 3;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--gold-accent);
+            letter-spacing: 0.1em;
+            margin-bottom: -10px;
+            margin-top: 20px;
         }
 
-        /* --- 共通セクションタイトル --- */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- その他パーツ --- */
         .section-title {
             font-size: 0.8rem; letter-spacing: 0.25em; color: var(--gold-accent);
             margin-bottom: 30px; text-align: center; font-weight: 700;
         }
 
-        /* --- FAQ / WHAT'S NEW セクション --- */
         .bottom-section {
             max-width: 600px; margin: 0 auto 100px; padding: 0 30px;
         }
         
-        /* FAQリンク用 */
-        .faq-link-box {
-            text-align: center; margin-bottom: 80px;
-        }
+        .faq-link-box { text-align: center; margin-bottom: 80px; }
         .btn-outline {
             display: inline-block; padding: 15px 50px; border: 1px solid var(--text-color);
             text-decoration: none; color: var(--text-color); font-size: 0.75rem; letter-spacing: 0.2em;
@@ -125,13 +139,11 @@
         }
         .btn-outline:hover { background: var(--text-color); color: #fff; }
 
-        /* 更新情報リスト */
         .news-list { list-style: none; padding: 0; margin: 0; font-size: 0.8rem; line-height: 2; }
         .news-item { display: flex; border-bottom: 1px solid #eee; padding: 10px 0; gap: 20px; }
         .news-date { color: #888; flex-shrink: 0; min-width: 85px; }
         .news-content { color: var(--text-color); }
 
-        /* --- その他演出 --- */
         .fade-in-active { opacity: 1; }
         .gold-separator { width: 0; height: 1px; background: linear-gradient(90deg, #c5a059, #e9d0a5, #c5a059); margin: 20px 0; transition: width 2s ease; transition-delay: 2.5s; }
         .gold-separator.show { width: 80px; }
@@ -143,15 +155,16 @@
         .message-section { padding: 120px 30px; text-align: center; opacity: 0; transform: translateY(30px); transition: 1.5s ease; }
         .message-section.is-visible { opacity: 1; transform: translateY(0); }
         .message-text { max-width: 500px; margin: 0 auto; line-height: 2.5; letter-spacing: 0.08em; font-size: 0.95rem; }
+        .message-rsvp-notice { color: var(--gold-accent); font-size: 0.85rem; margin-top: 40px; }
 
         @media (max-width: 768px) {
             .hero { flex-direction: column; height: auto; min-height: 100vh; padding-top: 80px; }
             .hero-left { padding: 40px 20px 20px 20px; width: 100%; box-sizing: border-box; }
             .hero-right { height: 45vh; width: 85%; align-self: flex-end; border-radius: 100px 0 0 10px; margin-top: 20px; }
-            .menu-grid { grid-template-columns: 1fr 1fr; } /* スマホは2列 */
+            .menu-grid { grid-template-columns: 1fr 1fr; }
+            .rsvp-deadline { grid-column: 1 / span 2; }
             .scroll-down { right: 15px; color: var(--text-color); }
             .scroll-down::after { background: var(--text-color); }
-            .news-item { flex-direction: column; gap: 5px; }
         }
     </style>
 </head>
@@ -198,7 +211,11 @@
                 木々の緑が深くなる季節<br>
                 皆様におかれましては 益々ご清祥のこととお慶び申し上げます<br>
                 この度 私たちは結婚式を挙げる運びとなりました<br>
-                日頃お世話になっている皆様と 穏やかなひとときを過ごせれば幸いです
+                日頃お世話になっている皆様と 穏やかなひとときを過ごせれば幸いです<br>
+                <div class="message-rsvp-notice">
+                    お手数ですが 挙式1ヶ月前までに<br>
+                    下記 RSVPよりご回答をお願い申し上げます
+                </div>
             </div>
         </section>
 
@@ -209,6 +226,7 @@
                 <a href="profile.html" class="btn-minimal">PROFILE</a>
                 <a href="gallery.html" class="btn-minimal">GALLERY</a>
                 <a href="music.html" class="btn-minimal">MUSIC</a>
+                <div class="rsvp-deadline">PLEASE REPLY BY 2026.04.16</div>
                 <a href="form.html" class="btn-minimal btn-rsvp">RSVP</a>
             </div>
         </section>
@@ -226,11 +244,7 @@
                         <span class="news-date">2026.01.29</span>
                         <span class="news-content">WEB招待状を公開しました。</span>
                     </li>
-                    <li class="news-item">
-                        <span class="news-date">2026.02.15</span>
-                        <span class="news-content">GALLERYに写真を追加しました。</span>
-                    </li>
-                    </ul>
+                </ul>
             </div>
         </section>
     </div>
