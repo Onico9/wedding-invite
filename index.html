@@ -12,7 +12,7 @@
             --text-color: #4a4a4a; 
             --gold-accent: #c5a059;
             --soft-gold: #f2ede4;
-            --charcoal-gray: #666; /* チャコール寄りのグレー */
+            --charcoal-gray: #666;
         }
 
         /* --- ロック画面 --- */
@@ -37,9 +37,9 @@
         /* --- ナビゲーション --- */
         .fixed-nav { position: fixed; top: 0; width: 100%; height: 60px; background: rgba(248, 247, 245, 0.98); display: flex; justify-content: flex-end; align-items: center; padding-right: 5%; gap: 15px; z-index: 100; box-sizing: border-box; border-bottom: 1px solid rgba(0,0,0,0.03); }
         .fixed-nav a { text-decoration: none; color: var(--text-color); font-size: 0.7rem; letter-spacing: 0.1em; transition: 0.3s; }
+        .fixed-nav a:hover:not(.disabled) { color: var(--gold-accent); }
         .fixed-nav a.disabled { color: var(--charcoal-gray); opacity: 0.7; pointer-events: none; }
         
-        /* 鍵のチャコールグレー設定 */
         .lock-icon { 
             display: inline-block;
             filter: grayscale(100%) contrast(0.8) brightness(0.8);
@@ -128,7 +128,7 @@
             <a href="venue.html">VENUE</a>
             <a href="program.html">PROGRAM</a>
             <a href="profile.html">PROFILE</a>
-            <a href="#" class="disabled"><span class="lock-icon">🔒</span>GALLERY</a>
+            <a href="https://script.google.com/macros/s/AKfycbwURwZ7jNvhN43lLo9UUVhsXghW6AHTJc4Bn9_gG-1jNvQ9jEDX6GWCX2AVPSIk-B55qg/exec" target="_blank">GALLERY</a>
             <a href="#" class="disabled"><span class="lock-icon">🔒</span>MUSIC</a>
             <a href="form.html">RSVP</a>
         </nav>
@@ -170,10 +170,9 @@
                 </div>
                 <div class="menu-row">
                     <a href="profile.html" class="btn-minimal">PROFILE</a>
-                    <div class="btn-minimal disabled">
-                        <span><span class="lock-icon">🔒</span>GALLERY</span>
-                        <span class="status-tag">4月末公開予定</span>
-                    </div>
+                    
+                    <a href="https://script.google.com/macros/s/AKfycbwURwZ7jNvhN43lLo9UUVhsXghW6AHTJc4Bn9_gG-1jNvQ9jEDX6GWCX2AVPSIk-B55qg/exec" target="_blank" class="btn-minimal">GALLERY</a>
+
                     <div class="btn-minimal disabled">
                         <span><span class="lock-icon">🔒</span>MUSIC</span>
                         <span class="status-tag">当日公開予定</span>
@@ -197,6 +196,10 @@
             <div class="news-box">
                 <div class="section-sub-title">WHAT'S NEW</div>
                 <ul class="news-list">
+                    <li class="news-item">
+                        <span class="news-date">2026.04.XX</span>
+                        <span class="news-content">GALLERYページを公開しました。</span>
+                    </li>
                     <li class="news-item">
                         <span class="news-date">2026.01.29</span>
                         <span class="news-content">WEB招待状を公開しました。</span>
