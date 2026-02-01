@@ -53,17 +53,26 @@
         .hero { display: flex; height: 100vh; width: 100%; position: relative; overflow: hidden; align-items: center; padding-top: 60px; box-sizing: border-box; }
         .hero-left { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-left: 8%; z-index: 2; }
         
-        /* 写真の表示位置を調整（お二人の立ち位置に合わせる） */
         .hero-right { 
             flex: 1.2; 
             height: 80vh; 
             background: url('web用.JPG') no-repeat; 
-            background-position: center right; /* 右側のお二人を優先 */
+            background-position: center right; 
             background-size: cover; 
-            border-radius: 200px 0 0 10px; 
+            /* 洗練された丸角：左上と左下に優雅な曲線を */
+            border-radius: 160px 0 0 60px; 
             margin-right: -2%; 
             position: relative; 
-            z-index: 1; 
+            z-index: 1;
+            /* 初期状態：透明かつ少し右に配置 */
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 2.5s ease, transform 2.5s ease;
+        }
+        /* フェードイン実行時 */
+        .hero-right.fade-in-active {
+            opacity: 1;
+            transform: translateX(0);
         }
         
         .invitation-text { font-weight: 900; font-size: clamp(2.2rem, 8vw, 3.5rem); margin: 0; line-height: 1.2; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0; transition: opacity 2.5s ease; }
@@ -118,12 +127,13 @@
             .hero { flex-direction: column; height: auto; min-height: 100vh; padding-top: 80px; }
             .hero-left { padding: 40px 30px; width: 100%; box-sizing: border-box; }
             .hero-right { 
-                height: 55vh; /* スマホでお二人の表情が見えるよう少し高さを調整 */
+                height: 55vh; 
                 width: 95%; 
                 align-self: flex-end; 
-                border-radius: 100px 0 0 10px; 
+                border-radius: 80px 0 0 30px; 
                 margin-top: 20px; 
-                background-position: center right; /* スマホでもお二人を優先 */
+                background-position: center right; 
+                transform: translateX(20px);
             }
             .invitation-text { font-size: 2.3rem; }
             .menu-row { flex-direction: column; gap: 15px; align-items: center; }
@@ -261,8 +271,16 @@
         };
 
         function startAnimation() {
+            // 写真のフェードイン開始
+            setTimeout(() => {
+                const heroImg = document.querySelector(".hero-right");
+                if(heroImg) heroImg.classList.add("fade-in-active");
+            }, 100);
+
+            // タイトルのフェードイン開始
             setTimeout(() => document.getElementById("main-title").classList.add("fade-in-active"), 100);
             setTimeout(() => document.getElementById("gold-line").classList.add("show"), 500);
+            
             setTimeout(() => {
                 const namesBox = document.getElementById("names-box");
                 if (namesBox && namesBox.innerHTML === "") {
@@ -274,6 +292,7 @@
                     type();
                 }
             }, 1200);
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
             }, { threshold: 0.1 });
